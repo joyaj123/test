@@ -1,0 +1,103 @@
+const mongoose=require("mongoose");
+
+const ISO4217 = ["USD","EUR","GBP","JPY","CAD","AUD","CHF","CNY","SEK","NZD"];
+
+const ownershipSchema=new mongoose.Schema(
+    {
+        investorId:{
+            type:mongoose.Schema.Types.ObjectId,
+            ref:"Investors",
+            required:true,
+            index:true,
+        },
+        companyId:{
+            type:mongoose.Schema.Types.ObjectId,
+            ref:"company",
+            required:true,
+            index:true,
+        },
+        Status:{
+            type:String,
+            enum:["ACTIVE","INACTIVE","SUSPENDED"],
+            default:"ACTIVE",
+            required:true,
+            index:true,
+        },
+        totalShares:{
+            type:Number,
+            required:true,
+            default:0,
+        },
+        ownershipPercentage:{
+            type:Number,
+            required:true,
+            default:0,
+        },
+        totalInvested:{
+            type:mongoose.Schema.Types.Decimal128,
+            required:true,
+            default:0.0,
+        },
+        averageCostPerShare:{
+            type:mongoose.Schema.Types.Decimal128,
+            required:true,
+            default:0.0,
+        },
+        CurrentValue:{
+            type:mongoose.Schema.Types.Decimal128,
+            default:0.0,
+        },
+        unrealizedGainLoss:{
+            type:mongoose.Schema.Types.Decimal128,
+            default:0.0,
+        },
+        totalReturnsReceived:{
+            type:mongoose.Schema.Types.Decimal128,
+            default:0.0,
+        },
+        currency:{
+            type:String,
+            required:true,
+            uppercase:true,
+            validate:{
+                validator:function(v){
+                    return ISO4217.includes(v);
+                },
+                message:  props => `${props.value} is not a valid ISO 4217 currency code`
+            },
+            default:"USD",
+        },
+        acquisitions:[
+            {
+                dealId:{
+                    type:mongoose.Schema.Types.ObjectId,
+                    ref:"Deals",
+                    required:true,
+                },
+                shares:{
+                    type:Number,
+                    required:true,
+                },
+                pricePerShare:{
+                    type:mongoose.Schema.Types.Decimal128,
+                    requied:true,
+                },
+                amount:{
+                    type:mongoose.Schema.Types.Decimal128,
+                    required:true,
+                },
+                acquiredAt:{
+                    type:Date,
+                    required:true,
+                },
+                type:{
+                    type:String,
+                    enum:["PRIMARY", "SECONDARY"],
+                    default:"PRIMARY",
+                },
+            },
+        ],
+    },
+    {timestamps:true}
+);
+module.exports=mongoose.model("ownership",ownershipSchema);
