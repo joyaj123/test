@@ -78,9 +78,7 @@ const dealSchema = new mongoose.Schema(
       },
     },
 
-    // ===============================
     // Company Snapshot (Denormalized)
-    // ===============================
     companySnapshot: {
       name: {
         type: String,
@@ -103,9 +101,7 @@ const dealSchema = new mongoose.Schema(
       },
     },
 
-    // ===============================
     // Payment Info (Embedded)
-    // ===============================
     payment: {
       method: {
         type: String,
@@ -123,9 +119,7 @@ const dealSchema = new mongoose.Schema(
       paymentReference: String,
     },
 
-    // ===============================
     // Admin Actions (Embedded Array)
-    // ===============================
     adminActions: [
       {
         adminId: {
