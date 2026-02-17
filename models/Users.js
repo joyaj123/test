@@ -56,11 +56,6 @@ const userSchema = new mongoose.Schema({
   }
 });
 
-// Auto-update `updatedAt` on save
-userSchema.pre("save", function(next) { //this functions run before saving the documents 
-  this.updatedAt = new Date(); // hon men hat al field updatedAt the sysdatr 
-  next();
-}); //This ensures updatedAt always has the latest modification date automatically whenever you save the document.
 
 module.exports = mongoose.model("User", userSchema); //ta nhat the document in the collection
 
